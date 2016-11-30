@@ -80,7 +80,12 @@ namespace PCG.Actors
 
 
         //Methods
-        public Vector2 GetRandomDirection
+        private void Movement()
+        {
+
+        }
+        
+        private Vector2 GetRandomDirection
         {
             get
             {

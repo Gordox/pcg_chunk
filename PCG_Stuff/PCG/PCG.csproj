@@ -47,6 +47,8 @@
     <Compile Include="Form\ControlerForm.Designer.cs">
       <DependentUpon>ControlerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Maps\Tile.cs" />
+    <Compile Include="Maps\TileMap.cs" />
     <Compile Include="PCGGame.cs" />
     <Compile Include="GameScene.cs" />
     <Compile Include="Program.cs" />
@@ -68,9 +70,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1 - Copy %282%29\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Form\ControlerForm.resx">
       <DependentUpon>ControlerForm.cs</DependentUpon>
