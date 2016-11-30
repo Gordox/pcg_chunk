@@ -50,7 +50,7 @@
     <Compile Include="Maps\Tile.cs" />
     <Compile Include="Maps\TileMap.cs" />
     <Compile Include="PCGGame.cs" />
-    <Compile Include="GameScene.cs" />
+    <Compile Include="Scenes\GameScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

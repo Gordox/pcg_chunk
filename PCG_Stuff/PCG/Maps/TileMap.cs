@@ -14,7 +14,7 @@ namespace PCG.Maps
 
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public Tile[,] Map { get; private set; }
+        public Tile[,] Map { get; set; }
 
         public TileMap(int width, int height)
         {
@@ -24,7 +24,7 @@ namespace PCG.Maps
             InitMap();
         }
 
-        public void InitMap()
+        private void InitMap()
         {
             for (int y = 0; y < Map.GetLength(1); y++)
             {
