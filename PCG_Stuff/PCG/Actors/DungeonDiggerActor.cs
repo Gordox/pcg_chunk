@@ -11,6 +11,16 @@ namespace PCG.Actors
 {
     class DungeonDiggerActor : ActorBase
     {
+        private const int ROOMCHANCEINCREACE = 3;
+        private const int DIRCHANCEINCREACE = 5;
+
+        private const int PC_START_VALUE = 5;
+        private const int PR_START_VALUE = 5;
+
+        private const int HOWLARGEDUNGEON = 20; //in %
+        private int totalRooms;
+
+
         //Pc changing dir chance
         //Pr Adding room chance
         private ActorSates.DiggerType diggerType;
@@ -19,10 +29,12 @@ namespace PCG.Actors
         private Random Nc, Nr, sizeW, sizeH;
 
         private float timer;
-        private const float INTERVAL = 300;
+        private const float INTERVAL = .0005f;
 
         private Texture2D texture;
         private TileMap map;
+
+        public bool StopDigDungeon { get; set; }
         
         public DungeonDiggerActor(Texture2D texture, Vector2 startPos, TileMap map, ActorSates.DiggerType diggerType) :
             base(startPos)
@@ -30,6 +42,7 @@ namespace PCG.Actors
             this.texture = texture;
             this.map = map;
             this.diggerType = diggerType;
+            StopDigDungeon = false;
             Init();
         }
 
@@ -37,12 +50,12 @@ namespace PCG.Actors
         {
             DiggCorridor();
             Direction = GetRandomDirection;
-            this.Pc = 5;
-            this.Pr = 5;
+            this.Pc = PC_START_VALUE;
+            this.Pr = PR_START_VALUE;
             this.Nc = new Random();
             this.Nr = new Random();
-            this.sizeW = new Random();
-            this.sizeH = new Random();
+            this.sizeW = new Random(50);
+            this.sizeH = new Random(1258);
         }
 
 
@@ -53,13 +66,15 @@ namespace PCG.Actors
             switch (diggerType)
             {
                 case ActorSates.DiggerType.CrazyDigger:
-                    if (INTERVAL >= timer)
+                    if (INTERVAL <= timer && StopDigDungeon == false)
                     {
                         Movement();
                         RandomDirChange();
                         RandomRoomCreation();
                         timer = 0;
                     }
+
+                    StopDigDungeon = EnoughBigDungeon();
                     break;
                 case ActorSates.DiggerType.SmartDigger:
                     break;
@@ -71,19 +86,19 @@ namespace PCG.Actors
 
         public void Draw(SpriteBatch SB)
         {
-
+            SB.Draw(texture, Position, Color.White);
         }
 
 
         //Methods
         private void Movement()
         {
-            if ((position + Direction).X > map.Width - 1 || (position + Direction).X < 0)
-                return;
-            else if ((position + Direction).Y > map.Height - 1 || (position + Direction).Y < 0)
-                return;
+            if ((position / 50 + Direction).X > map.Width - 2 || (position / 50 + Direction).X < 1)
+                Direction = GetRandomDirection;
+            else if ((position / 50 + Direction).Y > map.Height - 2 || (position / 50 + Direction).Y < 1)
+                Direction = GetRandomDirection;
             else
-                position += Direction;
+                position += Direction * 50;
 
             DiggCorridor();
         }
@@ -92,6 +107,7 @@ namespace PCG.Actors
             int posX = (int)Position.X / 50;
             int posY = (int)Position.Y / 50;
             map.Map[posX, posY].TileType = TileTypes.Room;
+            totalRooms++;
         }
         private void DiggRoom(int width, int height)
         {
@@ -99,15 +115,18 @@ namespace PCG.Actors
             int posY = (int)Position.Y / 50;
             int sX, sY;
 
-            sY = (posY - height < 0 ? 0 : posY - height);
-            sX = (posX - width < 0 ? 0 : posX - width);
+            sY = (posY - height / 2 < 1 ? 1 : posY - height / 2);
+            sX = (posX - width / 2 < 1 ? 1 : posX - width / 2);
 
-            for (int y = sY; y < (sY + height - 1); y++)
+            for (int y = sY; y < (sY + height); y++)
             {
-                for (int x = sX; x < (sX + width -1); x++)
+                for (int x = sX; x < (sX + width); x++)
                 {
-                    if(y < map.Width || x < map.Height)
+                    if (y < map.Height - 1 && x < map.Width - 1)
+                    {
                         map.Map[x, y].TileType = TileTypes.Room;
+                        totalRooms++;
+                    }
                 }
             }
         }
@@ -119,17 +138,18 @@ namespace PCG.Actors
                 Pc = 0;
             }
             else
-                Pc += 5;
+                Pc += DIRCHANCEINCREACE;
         }
         private void RandomRoomCreation()
         {
-            if (Nr.Next(0, 100) < Pr)
+            int nr = Nr.Next(0, 100);
+            if (nr < Pr)
             {
                 DiggRoom(sizeW.Next(3, 7), sizeH.Next(3, 7));
                 Pr = 0;
             }
             else
-                Pr += 5;
+                Pr += ROOMCHANCEINCREACE;
         }
         private Vector2 GetRandomDirection
         {
@@ -137,8 +157,20 @@ namespace PCG.Actors
             {
                 Vector2 tempDir = Vector2.Zero;
                 Random rnd = new Random();
-                int randomDirection = rnd.Next(4);
+                int randomDirection = rnd.Next(0,100);
 
+                if (randomDirection <= 25)
+                    tempDir = new Vector2(-1, 0); // Left
+
+                else if (randomDirection >= 26 && randomDirection <= 50)
+                    tempDir = new Vector2(0, -1); // up
+
+                if (randomDirection >= 51 && randomDirection <= 75)
+                    tempDir = new Vector2(0, 1); // Down
+
+                else if (randomDirection >= 76 && randomDirection <= 100)
+                    tempDir = new Vector2(1, 0); // Right
+/*
                 switch (randomDirection)
                 {
                     case 1:
@@ -161,8 +193,20 @@ namespace PCG.Actors
                         tempDir = Vector2.Zero;
                         break;
                 }
+ * */
                 return tempDir;
             }
+        }
+        private bool EnoughBigDungeon()
+        {
+            int totalSqrWalls = map.Width * map.Height;
+
+            float procent = ((float)totalRooms / (float)totalSqrWalls) * 100;
+
+            if (procent>= HOWLARGEDUNGEON)
+                return true;
+            else
+                return false;
         }
     }
 }

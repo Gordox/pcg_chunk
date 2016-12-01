@@ -41,12 +41,15 @@
     <Compile Include="Actors\ActorBase.cs" />
     <Compile Include="Actors\DungeonDiggerActor.cs" />
     <Compile Include="Actors\ActorSates.cs" />
+    <Compile Include="Camera2D.cs" />
     <Compile Include="Form\ControlerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\ControlerForm.Designer.cs">
       <DependentUpon>ControlerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyMouseReader.cs" />
+    <Compile Include="Manager\TextureManager.cs" />
     <Compile Include="Maps\Tile.cs" />
     <Compile Include="Maps\TileMap.cs" />
     <Compile Include="PCGGame.cs" />

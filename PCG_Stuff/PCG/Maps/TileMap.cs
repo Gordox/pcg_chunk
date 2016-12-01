@@ -12,6 +12,7 @@ namespace PCG.Maps
     {
         public const int TILESIZE = 50;
 
+
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Tile[,] Map { get; set; }
@@ -30,7 +31,7 @@ namespace PCG.Maps
             {
                 for (int x = 0; x < Map.GetLength(0); x++)
                 {
-                    //Map[x, y] = new Tile(, new Vector2(x * TILESIZE, y * TILESIZE));
+                    Map[x, y] = new Tile(new Vector2(x * TILESIZE, y * TILESIZE));
                 }
             }
         }

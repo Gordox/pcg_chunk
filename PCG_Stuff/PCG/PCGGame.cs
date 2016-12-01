@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PCG.Manager;
 
 namespace PCG
 {
@@ -9,6 +10,7 @@ namespace PCG
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameScene scene;
 
         public PCGGame()
         {
@@ -20,7 +22,9 @@ namespace PCG
      
         protected override void Initialize()
         {
-            
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -28,8 +32,9 @@ namespace PCG
     
         protected override void LoadContent()
         {
-          
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            TextureManager.LoadContent(Content);
+            scene = new GameScene(GraphicsDevice);
 
         }
 
@@ -43,8 +48,11 @@ namespace PCG
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            KeyMouseReader.Update();
 
-          
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            scene.Update(deltaTime);
 
             base.Update(gameTime);
         }
@@ -53,7 +61,8 @@ namespace PCG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-          
+            scene.Draw(spriteBatch);
+
 
             base.Draw(gameTime);
         }

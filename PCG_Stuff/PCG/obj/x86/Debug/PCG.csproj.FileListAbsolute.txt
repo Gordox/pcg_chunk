@@ -79,3 +79,6 @@ C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\bin\Windows\x86\Debug\Shar
 C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\obj\x86\Debug\PCG.csprojResolveAssemblyReference.cache
 C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\obj\x86\Debug\PCG.ControlerForm.resources
 C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\obj\x86\Debug\PCG.csproj.GenerateResource.Cache
+D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Floor.xnb
+D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Wall.xnb
+D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Digger.xnb
