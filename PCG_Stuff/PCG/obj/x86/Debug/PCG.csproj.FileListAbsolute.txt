@@ -82,3 +82,6 @@ C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\obj\x86\Debug\PCG.csproj.G
 D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Floor.xnb
 D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Wall.xnb
 D:\Git\PCG\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Digger.xnb
+C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Digger.xnb
+C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Floor.xnb
+C:\Users\Gordox\Documents\Git\PCG_stuff\PCG_Stuff\PCG\bin\Windows\x86\Debug\Content\Wall.xnb

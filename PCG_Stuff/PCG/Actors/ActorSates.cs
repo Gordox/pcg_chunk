@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/* Copyright (C) 2016 Anton Svensson (Gordox) - All Rights Reserved
+ * You may use, distribute and modify this code. As long this is here
+ * 
+ * Visit:
+ * For more info or question
+ */
 
 namespace PCG.Actors
 {

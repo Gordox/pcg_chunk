@@ -1,11 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿/* Copyright (C) 2016 Anton Svensson (Gordox) - All Rights Reserved
+ * You may use, distribute and modify this code. As long this is here.
+ * 
+ * Visit:
+ * For more info or question
+ */
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PCG.Maps;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PCG.Actors
 {
@@ -24,7 +27,7 @@ namespace PCG.Actors
         //Pc changing dir chance
         //Pr Adding room chance
         private ActorSates.DiggerType diggerType;
-        private int Pc, Pr;
+        private int Pc, Pr, Fr, Fc;
         //Nc: random chnase for dir
         private Random Nc, Nr, sizeW, sizeH;
 
@@ -49,13 +52,24 @@ namespace PCG.Actors
         private void Init()
         {
             DiggCorridor();
-            Direction = GetRandomDirection;
-            this.Pc = PC_START_VALUE;
-            this.Pr = PR_START_VALUE;
-            this.Nc = new Random();
-            this.Nr = new Random();
-            this.sizeW = new Random(50);
-            this.sizeH = new Random(1258);
+            switch (diggerType)
+            {
+                case ActorSates.DiggerType.CrazyDigger:
+                    Direction = GetRandomDirection;
+                    this.Pc = PC_START_VALUE;
+                    this.Pr = PR_START_VALUE;                
+                    this.Nc = new Random();
+                    this.Nr = new Random();
+                    this.sizeW = new Random(50);
+                    this.sizeH = new Random(1258);
+                    break;
+                case ActorSates.DiggerType.SmartDigger:
+                    this.Fc = 0;
+                    this.Fr = 0;
+                    break;
+                default:
+                    break;
+            }
         }
 
 
@@ -66,20 +80,25 @@ namespace PCG.Actors
             switch (diggerType)
             {
                 case ActorSates.DiggerType.CrazyDigger:
-                    if (INTERVAL <= timer && StopDigDungeon == false)
-                    {
-                        Movement();
-                        RandomDirChange();
-                        RandomRoomCreation();
-                        timer = 0;
-                    }
-
+                    UpdateCrazyDigger();
                     StopDigDungeon = EnoughBigDungeon();
                     break;
                 case ActorSates.DiggerType.SmartDigger:
+
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void UpdateCrazyDigger()
+        {
+            if (INTERVAL <= timer && StopDigDungeon == false)
+            {
+                Movement();
+                RandomDirChange();
+                RandomRoomCreation();
+                timer = 0;
             }
         }
 
@@ -91,6 +110,7 @@ namespace PCG.Actors
 
 
         //Methods
+            //Crazy digger
         private void Movement()
         {
             if ((position / 50 + Direction).X > map.Width - 2 || (position / 50 + Direction).X < 1)
@@ -109,27 +129,7 @@ namespace PCG.Actors
             map.Map[posX, posY].TileType = TileTypes.Room;
             totalRooms++;
         }
-        private void DiggRoom(int width, int height)
-        {
-            int posX = (int)Position.X / 50;
-            int posY = (int)Position.Y / 50;
-            int sX, sY;
-
-            sY = (posY - height / 2 < 1 ? 1 : posY - height / 2);
-            sX = (posX - width / 2 < 1 ? 1 : posX - width / 2);
-
-            for (int y = sY; y < (sY + height); y++)
-            {
-                for (int x = sX; x < (sX + width); x++)
-                {
-                    if (y < map.Height - 1 && x < map.Width - 1)
-                    {
-                        map.Map[x, y].TileType = TileTypes.Room;
-                        totalRooms++;
-                    }
-                }
-            }
-        }
+       
         private void RandomDirChange()
         {
             if (Nc.Next(0, 100) < Pc)
@@ -170,30 +170,7 @@ namespace PCG.Actors
 
                 else if (randomDirection >= 76 && randomDirection <= 100)
                     tempDir = new Vector2(1, 0); // Right
-/*
-                switch (randomDirection)
-                {
-                    case 1:
-                        // Left
-                        tempDir = new Vector2(-1, 0);
-                        break;
-                    case 2:
-                        // Right
-                        tempDir = new Vector2(1, 0);
-                        break;
-                    case 3:
-                        // Up
-                        tempDir = new Vector2(0, -1);
-                        break;
-                    case 4:
-                        // Down
-                        tempDir = new Vector2(0, 1);
-                        break;
-                    default:
-                        tempDir = Vector2.Zero;
-                        break;
-                }
- * */
+
                 return tempDir;
             }
         }
@@ -207,6 +184,42 @@ namespace PCG.Actors
                 return true;
             else
                 return false;
+        }
+
+            //Smart digger
+        private void CanPlaceRoom()
+        {
+            //check if a room form size 3-7 can be placed
+            for (int ySize = 3; ySize < 8; ySize++)
+            {
+                for (int xSize = 3; xSize < 8; xSize++)
+                {
+                    
+                }
+            }
+        }
+
+            //General
+        private void DiggRoom(int width, int height)
+        {
+            int posX = (int)Position.X / 50;
+            int posY = (int)Position.Y / 50;
+            int sX, sY;
+
+            sY = (posY - height / 2 < 1 ? 1 : posY - height / 2);
+            sX = (posX - width / 2 < 1 ? 1 : posX - width / 2);
+
+            for (int y = sY; y < (sY + height); y++)
+            {
+                for (int x = sX; x < (sX + width); x++)
+                {
+                    if (y < map.Height - 1 && x < map.Width - 1)
+                    {
+                        map.Map[x, y].TileType = TileTypes.Room;
+                        totalRooms++;
+                    }
+                }
+            }
         }
     }
 }
