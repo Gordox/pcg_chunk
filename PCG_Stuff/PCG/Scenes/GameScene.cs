@@ -33,7 +33,7 @@ namespace PCG
         private void Init()
         {
             tileMap = new TileMap(WIDTH, HEIGHT);
-            digger = new DungeonDiggerActor(TextureManager.Digger, new Vector2(WIDTH / 2 * 50, HEIGHT / 2 * 50), tileMap, ActorSates.DiggerType.CrazyDigger);
+            digger = new DungeonDiggerActor(TextureManager.Digger, new Vector2(WIDTH / 2 * 50, HEIGHT / 2 * 50), tileMap, ActorSates.DiggerType.SmartDigger);
         }
 
         public void Update(float gameTime)

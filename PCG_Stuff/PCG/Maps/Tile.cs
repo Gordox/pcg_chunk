@@ -13,7 +13,8 @@ namespace PCG.Maps
     public enum TileTypes
     {
         Wall,
-        Room
+        Room,
+        Corridor
     }
     public class Tile
     {
@@ -28,10 +29,21 @@ namespace PCG.Maps
 
         public void Draw(SpriteBatch SB)
         {
-            if(TileType == TileTypes.Room)
-                SB.Draw(TextureManager.Floor, Position, Color.White);
-            else
-                SB.Draw(TextureManager.Wall, Position, Color.White);
+            switch (TileType)
+            {
+                case TileTypes.Wall:
+                     SB.Draw(TextureManager.Wall, Position, Color.White);
+                    break;
+                case TileTypes.Room:
+                    SB.Draw(TextureManager.Floor, Position, Color.White);
+                    break;
+                case TileTypes.Corridor:
+                    SB.Draw(TextureManager.Floor, Position, Color.Black);
+                    break;
+                default:
+                    break;
+            }
+               
         }
     }
 }
