@@ -4,8 +4,8 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Spellabbet/Documents/Git/PCG_stuff/PCG_Stuff/PCG/Content/Wall.png</File>
-    <File>C:/Users/Spellabbet/Documents/Git/PCG_stuff/PCG_Stuff/PCG/Content/Floor.png</File>
-    <File>C:/Users/Spellabbet/Documents/Git/PCG_stuff/PCG_Stuff/PCG/Content/Digger.png</File>
+    <File>D:/Git/PCG/PCG_Stuff/PCG/Content/Wall.png</File>
+    <File>D:/Git/PCG/PCG_Stuff/PCG/Content/Floor.png</File>
+    <File>D:/Git/PCG/PCG_Stuff/PCG/Content/Digger.png</File>
   </SourceFiles>
 </SourceFileCollection>

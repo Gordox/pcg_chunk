@@ -20,8 +20,8 @@ namespace PCG
         DungeonDiggerActor digger;
         private Camera2D camera;
 
-        private const int WIDTH = 100;
-        private const int HEIGHT = 100;
+        private const int WIDTH = 20;
+        private const int HEIGHT = 20;
 
 
         public GameScene(GraphicsDevice GD)

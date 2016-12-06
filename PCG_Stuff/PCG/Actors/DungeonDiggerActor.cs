@@ -21,7 +21,7 @@ namespace PCG.Actors
         private const int PC_START_VALUE = 5;
         private const int PR_START_VALUE = 5;
 
-        private const int HOWLARGEDUNGEON = 10; //in %
+        private const int HOWLARGEDUNGEON = 80; //in %
         private int totalRooms;
 
 
@@ -33,7 +33,7 @@ namespace PCG.Actors
         private Random Nc, Nr, sizeW, sizeH;
 
         private float timer;
-        private const float INTERVAL = .5f;
+        private const float INTERVAL = .9f;
 
         private Texture2D texture;
         private TileMap map;
@@ -81,7 +81,8 @@ namespace PCG.Actors
             switch (diggerType)
             {
                 case ActorSates.DiggerType.CrazyDigger:
-                    UpdateCrazyDigger();                  
+                    UpdateCrazyDigger();
+                    StopDigDungeon = EnoughBigDungeon();
                     break;
                 case ActorSates.DiggerType.SmartDigger:
                     UpdateSmartDigger();                  
@@ -89,7 +90,7 @@ namespace PCG.Actors
                 default:
                     break;
             }
-            StopDigDungeon = EnoughBigDungeon();
+            
         }
 
         private void UpdateSmartDigger()
@@ -100,8 +101,8 @@ namespace PCG.Actors
                 CanPlaceRoom();
                 CanPlaceCorridor();
                 timer = 0;
-            }
-            StopStuckSmartDigger();
+                StopStuckSmartDigger();
+            }  
         }
         private void UpdateCrazyDigger()
         {
@@ -298,6 +299,8 @@ namespace PCG.Actors
         }
         private bool CorridorWontIntersect(Vector2 dir, int length)
         {
+            int roomCount = 0;
+            
             int posX = (int)Position.X / 50;
             int posY = (int)Position.Y / 50;
             Vector2 temp = new Vector2(posX, posY);
@@ -306,16 +309,30 @@ namespace PCG.Actors
                 temp += dir;
 
                 if ((int)temp.X < 1 || (int)temp.X > map.Width - 2)
-                    continue;
-                else if ((int)temp.Y < 1 || (int)temp.Y > map.Width - 2)
-                    continue;
+                    return false;
+                if ((int)temp.Y < 1 || (int)temp.Y > map.Width - 2)
+                    return false;
+
+                if (map.Map[(int)temp.X, (int)temp.Y].TileType == TileTypes.Room)
+                    roomCount++;
+
+                if (i == length - 1 && map.Map[(int)temp.X, (int)temp.Y].TileType == TileTypes.Room && roomCount > 2)
+                    return false;
 
                 if (map.Map[(int)temp.X, (int)temp.Y].TileType == TileTypes.Corridor)
                     return false;
                 else
                     continue;
-            } 
-            return true;
+
+
+
+            }
+
+
+            if (roomCount == length)
+                return false;
+            else
+                return true;
         }
         private void StopStuckSmartDigger()
         {
@@ -370,7 +387,7 @@ namespace PCG.Actors
             {
                 temp += dir;
 
-                if ((int)temp.Y < map.Height - 1 && (int)temp.X < map.Width - 1 && (int)temp.X > 1 && (int)temp.Y > 1)
+                if ((int)temp.Y < map.Height - 1 && (int)temp.X < map.Width - 1 && (int)temp.X >= 1 && (int)temp.Y >= 1)
                 {
                     if (map.Map[(int)temp.X, (int)temp.Y].TileType == TileTypes.Wall)
                     {
@@ -383,6 +400,8 @@ namespace PCG.Actors
                         position = (temp * 50);
                     }
                 }
+                else
+                    continue;
             }
 
         }
