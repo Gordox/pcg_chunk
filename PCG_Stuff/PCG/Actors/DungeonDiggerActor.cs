@@ -81,16 +81,15 @@ namespace PCG.Actors
             switch (diggerType)
             {
                 case ActorSates.DiggerType.CrazyDigger:
-                    UpdateCrazyDigger();
-                    StopDigDungeon = EnoughBigDungeon();
+                    UpdateCrazyDigger();                  
                     break;
                 case ActorSates.DiggerType.SmartDigger:
-                    UpdateSmartDigger();
-                    StopDigDungeon = EnoughBigDungeon();
+                    UpdateSmartDigger();                  
                     break;
                 default:
                     break;
             }
+            StopDigDungeon = EnoughBigDungeon();
         }
 
         private void UpdateSmartDigger()
@@ -211,7 +210,7 @@ namespace PCG.Actors
             {
                 for (int xSize = 3; xSize < 8; xSize++)
                 {
-                    if (RoomWontIntersectOtherRooms(xSize, ySize) == true)
+                    if (RoomWontIntersectOtherRooms(xSize+1, ySize+1) == true)
                     {
                         roomHolder.Add(new Vector2(xSize, ySize));
                     }
@@ -366,15 +365,17 @@ namespace PCG.Actors
             int posY = (int)Position.Y / 50;
             Vector2 temp = new Vector2(posX, posY);
 
-            if (posY < map.Height - 1 && posX < map.Width - 1 && posX > 1 && posY > 1)
+
+            for (int i = 0; i < length; i++)
             {
-                for (int i = 0; i < length; i++)
+                temp += dir;
+
+                if ((int)temp.Y < map.Height - 1 && (int)temp.X < map.Width - 1 && (int)temp.X > 1 && (int)temp.Y > 1)
                 {
-                    temp += dir;
-                    if (map.Map[posX, posY].TileType == TileTypes.Wall)
+                    if (map.Map[(int)temp.X, (int)temp.Y].TileType == TileTypes.Wall)
                     {
                         position = (temp * 50);
-                        map.Map[posX, posY].TileType = TileTypes.Corridor;
+                        map.Map[(int)temp.X, (int)temp.Y].TileType = TileTypes.Corridor;
                         totalRooms++;
                     }
                     else
